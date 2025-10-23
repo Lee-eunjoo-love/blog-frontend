@@ -1,5 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
-import produce from 'immer';
+import { produce } from 'immer';
 
 // #. 액션 타입 정의 : '모델명/액션명' 형태로 하여 액션명 충돌 방지
 const CHANGE_FIELD = 'auth/CHANGE_FIELD';
@@ -36,8 +36,14 @@ const initialState = {
 // #. 리듀서 함수
 const auth = handleActions(
   {
-    [CHANGE_FIELD]: (state, action) => state,
-    [INITIALIZE_FORM]: (state, action) => state,
+    [CHANGE_FIELD]: (state, { payload: { form, key, value } }) =>
+      produce(state, (draft) => {
+        draft[form][key] = value; // #. state.register.username
+      }),
+    [INITIALIZE_FORM]: (state, { payload: form }) => ({
+      ...state,
+      [form]: initialState[form],
+    }),
   },
   initialState,
 );
