@@ -43,3 +43,7 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
+
+/**
+ * [컨테이너 컴포넌트] useDispatch와 useSelector 함수를 사용하여 프레젠테이션 컴포넌트와 리덕스 연동
+ */
