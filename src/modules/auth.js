@@ -1,18 +1,43 @@
 import { createAction, handleActions } from 'redux-actions';
+import produce from 'immer';
 
 // #. 액션 타입 정의 : '모델명/액션명' 형태로 하여 액션명 충돌 방지
-const SAMPLE_ACTION = 'auth/SAMPLE_ACTION';
+const CHANGE_FIELD = 'auth/CHANGE_FIELD';
+const INITIALIZE_FORM = 'auth/INITIALIZE_FORM';
 
 // #. 액션 생성 함수
-export const sampleAction = createAction(SAMPLE_ACTION);
+export const changeField = createAction(
+  CHANGE_FIELD,
+  ({ form, key, value }) => ({
+    // #. form:  register / login
+    // #. key:   username / password / passwordConfirm
+    // #. value: 실제 바꾸려는 값
+    form,
+    key,
+    value,
+  }),
+);
+
+export const initializeForm = createAction(INITIALIZE_FORM, (form) => form); // #. register / login
 
 // #. 초기 상태
-const initialState = {};
+const initialState = {
+  register: {
+    username: '',
+    password: '',
+    passwordConfirm: '',
+  },
+  login: {
+    username: '',
+    password: '',
+  },
+};
 
 // #. 리듀서 함수
 const auth = handleActions(
   {
-    [SAMPLE_ACTION]: (state, action) => state,
+    [CHANGE_FIELD]: (state, action) => state,
+    [INITIALIZE_FORM]: (state, action) => state,
   },
   initialState,
 );
