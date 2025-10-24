@@ -32,8 +32,8 @@ const LoginForm = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     const { username, password } = form;
-    if (!username || !password) {
-      alert('로그인 정보를 정확히 입력해 주세요.');
+    if ([username, password].includes('')) {
+      setError('로그인 정보를 정확히 입력해 주세요.');
       return;
     }
 
