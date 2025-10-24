@@ -8,16 +8,16 @@ import rootReducer, { rootSaga } from './modules';
 import { legacy_createStore as createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from '../node_modules/redux-devtools-extension/index';
 import { Provider } from 'react-redux';
-import createRequestSaga from './lib/createRequestSaga';
+import createSagaMiddleware from 'redux-saga';
 
-const sagaMiddelware = createRequestSaga();
+const sagaMiddelware = createSagaMiddleware();
 
 // #. redux-saga 미들웨어 적용
 const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(sagaMiddelware)),
 );
-sagaMiddelware.arguments(rootSaga);
+sagaMiddelware.run(rootSaga);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
