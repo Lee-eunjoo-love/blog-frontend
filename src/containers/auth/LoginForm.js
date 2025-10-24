@@ -1,12 +1,18 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeField, initializeForm } from '../../modules/auth';
+import { changeField, initializeForm, login } from '../../modules/auth';
 import AuthForm from '../../components/auth/AuthForm';
+import { check } from '../../modules/user';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { form } = useSelector(({ auth }) => ({
+  const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
     form: auth.login,
+    auth: auth.auth,
+    authError: auth.authError,
+    user: user.user,
   }));
 
   // #. INPUT 변경 이벤트
@@ -21,16 +27,43 @@ const LoginForm = () => {
     );
   };
 
-  // #. FORM 등록 이벤트
+  // #. FORM 로그인 이벤트
   const onSubmit = (e) => {
     e.preventDefault();
-    // TODO:
+    const { username, password } = form;
+    if (!username || !password) {
+      alert('로그인 정보를 정확히 입력해 주세요.');
+      return;
+    }
+
+    dispatch(login({ username, password }));
   };
 
   // #. 컴포넌트가 처음 렌더링될 때 FORM 초기화
   useEffect(() => {
     dispatch(initializeForm('login'));
   }, [dispatch]);
+
+  // #. 로그인 성공/실패 처리
+  useEffect(() => {
+    if (authError) {
+      console.log('오류 발생');
+      console.log(authError);
+      return;
+    }
+
+    if (auth) {
+      console.log('로그인 성공');
+      dispatch(check());
+    }
+  }, [auth, authError, dispatch]);
+
+  // #. 로그인 사용자 정보 유효성 확인
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   return (
     <AuthForm
