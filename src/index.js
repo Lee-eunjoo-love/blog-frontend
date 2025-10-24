@@ -4,12 +4,20 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import rootReducer from './modules';
-import { legacy_createStore as createStore } from 'redux';
+import rootReducer, { rootSaga } from './modules';
+import { legacy_createStore as createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from '../node_modules/redux-devtools-extension/index';
 import { Provider } from 'react-redux';
+import createRequestSaga from './lib/createRequestSaga';
 
-const store = createStore(rootReducer, composeWithDevTools());
+const sagaMiddelware = createRequestSaga();
+
+// #. redux-saga 미들웨어 적용
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(sagaMiddelware)),
+);
+sagaMiddelware.arguments(rootSaga);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

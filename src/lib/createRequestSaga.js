@@ -1,5 +1,14 @@
-import { call, put } from 'rdux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import { startLoading, finishLoading } from '../modules/loading';
+
+/**
+ * 액션 타입 일괄 생성 함수
+ */
+export const createRequestActionTypes = (type) => {
+  const SUCCESS = `${type}_SUCCESS`;
+  const FAILURE = `${type}_FAILURE`;
+  return [type, SUCCESS, FAILURE];
+};
 
 export default function createRequestSaga(type, request) {
   const SUCCESS = `${type}_SUCCESS`;
