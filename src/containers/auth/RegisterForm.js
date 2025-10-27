@@ -1,18 +1,23 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { changeField, initializeForm, register } from '../../modules/auth';
 import AuthForm from '../../components/auth/AuthForm';
 import { check } from '../../modules/user';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterForm = () => {
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { form, auth, authError, user } = useSelector(({ auth, user }) => ({
-    form: auth.register,
-    auth: auth.auth,
-    authError: auth.authError,
-    user: user.user,
-  }));
+  const { form, auth, authError, user } = useSelector(
+    ({ auth, user }) => ({
+      form: auth.register,
+      auth: auth.auth,
+      authError: auth.authError,
+      user: user.user,
+    }),
+    shallowEqual,
+  );
 
   // #. INPUT 변경 이벤트
   const onChange = (e) => {
@@ -75,9 +80,15 @@ const RegisterForm = () => {
   useEffect(() => {
     if (user) {
       console.log('check API 성공');
-      console.log(user);
+      navigate('/');
+      try {
+        // #. 로그인 상태 정보 조회
+        localStorage.getItem('user', JSON.stringify(user));
+      } catch (e) {
+        console.log('로그인 정보를 찾을 수 없습니다.');
+      }
     }
-  }, [user]);
+  }, [user, navigate]);
 
   return (
     <AuthForm

@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 import Responsive from './Responsive';
 import Button from './Button';
@@ -32,7 +33,15 @@ const Spacer = styled.div`
   height: 4rem;
 `;
 
-const Header = () => {
+// #. 로그인 사용자 정보
+const UserInfo = styled.button`
+  font-weight: 800;
+  margin-right: 1rem;
+  border: none;
+  background: none;
+`;
+
+const Header = ({ user, logout }) => {
   return (
     <>
       <HeaderBlock>
@@ -40,9 +49,16 @@ const Header = () => {
           <Link to="/" className="logo">
             REACTERS
           </Link>
-          <div className="right">
-            <Button to="/login">로그인</Button>
-          </div>
+          {user ? (
+            <div className="right">
+              <UserInfo>{user.username}</UserInfo>
+              <Button onClick={logout}>로그아웃</Button>
+            </div>
+          ) : (
+            <div className="right">
+              <Button to="/login">로그인</Button>
+            </div>
+          )}
         </Wrapper>
       </HeaderBlock>
       <Spacer />
@@ -50,7 +66,7 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default React.memo(Header);
 
 /**
  * style-components 로 만든 컴포넌트인

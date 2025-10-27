@@ -91,9 +91,7 @@ const AuthForm = ({ type, form, onChange, onSubmit, error }) => {
           />
         )}
         {error && <ErrorMessage>{error}</ErrorMessage>}
-        <ButtonWithMarginTop cyan fullWidth>
-          {text}
-        </ButtonWithMarginTop>
+        <ButtonWithMarginTop cyan="true">{text}</ButtonWithMarginTop>
       </form>
       <Footer>
         {type === 'login' ? (

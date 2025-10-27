@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import palette from '../../lib/styles/palette';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const buttonStyle = css`
@@ -38,7 +38,10 @@ const buttonStyle = css`
 `;
 
 // #. useNavigate 사용하영 페이지 이동하는 컴포넌트
-const StyledButton = styled.button`
+const StyledButton = styled.button.withConfig({
+  shouldForwardProp: (prop) =>
+    !['cyan'].includes(prop) && !['fullWidth'].includes(prop),
+})`
   ${buttonStyle}
 `;
 
@@ -66,10 +69,25 @@ const StyledLink = styled(Link)`
 const Button = (props) => {
   // #. props 에 to 값이 전달되면 Link 를 사용하여 페이지 이동하는 컴포넌트
   // #. props 에 to 값이 전달되지 않으면 Button 을 사용하여 페이지 이동하는 컴포넌트
+  // #. [React UI 경고 해결]styled-components: it looks like an unknown prop "cyan" is being sent through to the DOM, which will likely trigger a React console error. If you would like automatic filtering of unknown props, you can opt-into that behavior via <StyleSheetManager shouldForwardProp= ...
+  // #.   1. styled.button.withConfig({ shouldForwardProp: (prop) => !['cyan'].includes(prop) && !['fullWidth'].includes(prop),})`${buttonStyle}`;
+  // #.   2. DOM 요소에 없는 속성인 cyan과 fullWidth의 boolean 값은 true 값을 넘기면 true(1) 아니면 null(속성 제거) 로 설정
   return props.to ? (
-    <StyledLink {...props} cyan={props.cyan ? 1 : 0} />
+    <>
+      <StyledLink
+        {...props}
+        cyan={String(props.cyan || false) === 'true' ? 1 : null}
+        fullWidth={String(props.fullWidth || true) === 'true' ? 1 : null}
+      />
+    </>
   ) : (
-    <StyledButton {...props} />
+    <>
+      <StyledButton
+        {...props}
+        cyan={String(props.cyan || false) === 'true' ? 1 : null}
+        fullWidth={String(props.fullWidth || true) === 'true' ? 1 : null}
+      />
+    </>
   );
 };
 
