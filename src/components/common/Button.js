@@ -37,7 +37,7 @@ const buttonStyle = css`
     `}
 `;
 
-// #. useNavigate 사용하영 페이지 이동하는 컴포넌트
+// #. useNavigate 사용하여 페이지 이동하는 컴포넌트
 const StyledButton = styled.button.withConfig({
   shouldForwardProp: (prop) =>
     !['cyan'].includes(prop) && !['fullWidth'].includes(prop),
