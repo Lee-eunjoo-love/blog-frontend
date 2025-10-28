@@ -36,7 +36,7 @@ const WriteActionButtonsContainer = () => {
     if (post) {
       const { _id, user } = post;
       console.log('write success', _id, user);
-      navigate(`/@${user.username}/${_id}`);
+      navigate(`/posts/${user.username}/${_id}`);
     }
     if (postError) {
       console.log(postError);
