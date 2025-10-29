@@ -6,46 +6,37 @@ import * as postsAPI from '../lib/api/posts';
 import { takeLatest } from 'redux-saga/effects';
 
 // #. 액션 타입
-const [READ_POST, READ_POST_SUCCESS, READ_POST_FAILURE] =
-  createRequestActionTypes('posts/READ_POST');
-const UNLOAD_POST = 'posts/UNLOAD_POST'; // #. 포스트 페이지에서 벗어날 때 리덕스 상태 데이터 초기화
+const [LIST_POSTS, LIST_POSTS_SUCCESS, LIST_POSTS_FAILURE] =
+  createRequestActionTypes('posts/LIST_POSTS');
 
 // #. 액션 생성 함수
-export const readPost = createAction(READ_POST, (id) => id);
-export const unloadPost = createAction(UNLOAD_POST);
+export const listPosts = createAction(LIST_POSTS);
 
 // #. saga
-const readPostSaga = createRequestSaga(READ_POST, postsAPI.readPost);
-export function* postSaga() {
-  yield takeLatest(READ_POST, readPostSaga);
+const listPostsSaga = createRequestSaga(LIST_POSTS, postsAPI.listPosts);
+export function* postsSaga() {
+  yield takeLatest(LIST_POSTS, listPostsSaga);
 }
 
 // #. 초기화
 const initialState = {
-  post: null,
+  posts: null,
   error: null,
 };
 
 // #. 리듀서 함수
 const posts = handleActions(
   {
-    [READ_POST_SUCCESS]: (state, { payload: post }) => ({
+    [LIST_POSTS_SUCCESS]: (state, { payload: posts }) => ({
       ...state,
-      post,
+      posts,
     }),
-    [READ_POST_FAILURE]: (state, { payload: error }) => ({
+    [LIST_POSTS_FAILURE]: (state, { payload: error }) => ({
       ...state,
       error,
     }),
-    [UNLOAD_POST]: () => initialState,
   },
   initialState,
 );
 
 export default posts;
-
-/**
- * 페이지를 벗어날 때 리덕스 상태 데이터를 초기화하지 않으면,
- * 뒤로 가기로 돌아가 또다른 포스트를 읽을 때
- * 아주 짧은 시간 동안 이전에 불어왔던 포스트가 나타나는 깜박임 현상 발생.
- */
