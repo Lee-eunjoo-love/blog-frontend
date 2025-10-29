@@ -35,6 +35,12 @@ const buttonStyle = css`
         background: ${palette.cyan[4]};
       }
     `}
+
+    &:disabled {
+    background: ${palette.gray[3]};
+    color: ${palette.gray[5]};
+    cursor: not-allowed;
+  }
 `;
 
 // #. useNavigate 사용하여 페이지 이동하는 컴포넌트
