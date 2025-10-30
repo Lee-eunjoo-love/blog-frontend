@@ -5,6 +5,7 @@ import { readPost, unloadPost } from '../../modules/post';
 import PostViewer from '../../components/post/PostViewer';
 import PostActionButtons from '../../components/post/PostActionButtons';
 import { setOriginalPost } from '../../modules/write';
+import { removePost } from '../../lib/api/posts';
 
 const PostViewerContainer = () => {
   const { postId } = useParams();
@@ -33,12 +34,27 @@ const PostViewerContainer = () => {
     navigate('/write');
   };
 
+  // #. 삭제
+  const onRemove = async () => {
+    try {
+      await removePost(postId);
+      navigate('/');
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // #. 글쓴이와 현재 로그인 사용자 동일 여부
+  const ownPost = (user && user._id) === (post && post.user._id);
+
   return (
     <PostViewer
       post={post}
       loading={loading}
       error={error}
-      actionButtons={<PostActionButtons onEdit={onEdit} />}
+      actionButtons={
+        ownPost && <PostActionButtons onEdit={onEdit} onRemove={onRemove} />
+      }
     />
   );
 };
