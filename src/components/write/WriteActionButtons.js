@@ -20,11 +20,11 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const WriteActionButtons = ({ onCancel, onPublish }) => {
+const WriteActionButtons = ({ onCancel, onPublish, isEdit }) => {
   return (
     <WriteActionButtonsBlock>
       <StyledButton cyan fullWidth="false" onClick={onPublish}>
-        포스트 등록
+        포스트 {isEdit ? '수정' : '등록'}
       </StyledButton>
       <StyledButton fullWidth="false" onClick={onCancel}>
         취소

@@ -1,22 +1,31 @@
 import React, { useEffect } from 'react';
 import WriteActionButtons from '../../components/write/WriteActionButtons';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { writePost } from '../../modules/write';
+import { writePost, updatePost } from '../../modules/write';
 
 const WriteActionButtonsContainer = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { title, body, tags, post, postError } = useSelector(({ write }) => ({
-    title: write.title,
-    body: write.body,
-    tags: write.tags,
-    post: write.post,
-    postError: write.postError,
-  }));
+  const { title, body, tags, post, postError, originalPostId } = useSelector(
+    ({ write }) => ({
+      title: write.title,
+      body: write.body,
+      tags: write.tags,
+      post: write.post,
+      postError: write.postError,
+      originalPostId: write.originalPostId,
+    }),
+    shallowEqual,
+  );
 
-  // #. 포스트 등록
+  // #. 포스트 등록/수정 (originalPostId 가 유효하면 수정, 아니면 등록)
   const onPublish = () => {
+    if (originalPostId) {
+      dispatch(updatePost({ title, body, tags, id: originalPostId }));
+      return;
+    }
+
     dispatch(
       writePost({
         title,
@@ -35,15 +44,19 @@ const WriteActionButtonsContainer = () => {
   useEffect(() => {
     if (post) {
       const { _id, user } = post;
-      console.log('write success', _id, user);
       navigate(`/posts/${user.username}/${_id}`);
     }
     if (postError) {
-      console.log(postError);
     }
   }, [navigate, post, postError]);
 
-  return <WriteActionButtons onPublish={onPublish} onCancel={onCancel} />;
+  return (
+    <WriteActionButtons
+      onPublish={onPublish}
+      onCancel={onCancel}
+      isEdit={!!originalPostId}
+    />
+  );
 };
 
 export default WriteActionButtonsContainer;

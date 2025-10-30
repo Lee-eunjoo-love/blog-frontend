@@ -61,6 +61,14 @@ const Editor = ({ title, body, onChangeField }) => {
     });
   }, [onChangeField]);
 
+  // #. 현재 포스터 정보 (컴포넌트가 마운트되고 최초 1회만 useEffect 에 등록한 작업이 실행되도록 useRef를 사용하여 mount 상태에 따라 작업을 처리하도록 설정.)
+  const mounted = useRef(false);
+  useEffect(() => {
+    if (mounted.current) return;
+    mounted.current = true;
+    quillInstance.current.root.innerHTML = body;
+  }, [body]);
+
   // #. 제목 변경 이벤트
   const onChangeTitle = (e) => {
     onChangeField({ key: 'title', value: e.target.value });

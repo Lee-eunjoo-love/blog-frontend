@@ -8,6 +8,9 @@ export const readPost = (id) => client.get(`/api/posts/${id}`);
 export const listPosts = ({ page, username, tag }) =>
   client.get('/api/posts', { params: { page, username, tag } });
 
+export const updatePost = ({ id, title, body, tags }) =>
+  client.patch(`/api/posts/${id}`, { title, body, tags });
+
 /**
  * 포스트에 관련된 API 요청 함수
  */

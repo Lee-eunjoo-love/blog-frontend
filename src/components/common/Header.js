@@ -52,11 +52,15 @@ const Header = ({ user, logout }) => {
           {user ? (
             <div className="right">
               <UserInfo>{user.username}</UserInfo>
-              <Button onClick={logout}>로그아웃</Button>
+              <Button onClick={logout} fullWidth="false">
+                로그아웃
+              </Button>
             </div>
           ) : (
             <div className="right">
-              <Button to="/login">로그인</Button>
+              <Button to="/login" fullWidth="false">
+                로그인
+              </Button>
             </div>
           )}
         </Wrapper>
