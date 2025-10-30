@@ -11,7 +11,7 @@ const PostActionButtonsBlock = styled.div`
 `;
 
 const ActionButton = styled.button`
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 1rem;
   border-radius: 4px;
   color: ${palette.gray[6]};
   font-weight: bold;
@@ -45,8 +45,8 @@ const PostActionButtons = ({ onEdit, onRemove }) => {
   return (
     <>
       <PostActionButtonsBlock>
-        <ActionButton onClick={onEdit}>수정</ActionButton>
-        <ActionButton onClick={onRemoveClick}>삭제</ActionButton>
+        <ActionButton onClick={onEdit}>✔️ 수정</ActionButton>
+        <ActionButton onClick={onRemoveClick}>❌ 삭제</ActionButton>
       </PostActionButtonsBlock>
       <AskRemoveModal
         visible={modal}
@@ -58,3 +58,8 @@ const PostActionButtons = ({ onEdit, onRemove }) => {
 };
 
 export default PostActionButtons;
+
+/**
+ * 수정 : 로직은 write 컴포넌트에서 구현
+ * 삭제 : PostActionButtons 컴포넌트에서 구현
+ */
