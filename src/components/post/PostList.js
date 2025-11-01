@@ -34,8 +34,12 @@ const PostItemBlock = styled.div`
     }
   }
 
-  p {
+  div {
     margin-top: 2rem;
+  }
+
+  p {
+    line-height: 1rem;
   }
 `;
 
@@ -51,7 +55,7 @@ const PostItem = ({ post }) => {
         publishedDate={new Date(publishedDate)}
       />
       <Tags tags={tags} />
-      <p>{body}</p>
+      <div className="item" dangerouslySetInnerHTML={{ __html: body }} />
     </PostItemBlock>
   );
 };

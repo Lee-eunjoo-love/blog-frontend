@@ -5,18 +5,24 @@ import RegisterPage from './pages/auth/RegisterPage';
 import WritePage from './pages/post/WritePage';
 import PostPage from './pages/post/PostPage';
 import NotFoundPage from './pages/NotFoundPage';
+import { Helmet } from 'react-helmet-async';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<PostListPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/write" element={<WritePage />} />
-      <Route path="/posts/:username" element={<PostListPage />} />
-      <Route path="/posts/:username/:postId" element={<PostPage />} />
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+    <>
+      <Helmet>
+        <title>REACTERS</title>
+      </Helmet>
+      <Routes>
+        <Route path="/" element={<PostListPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/write" element={<WritePage />} />
+        <Route path="/posts/:username" element={<PostListPage />} />
+        <Route path="/posts/:username/:postId" element={<PostPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </>
   );
 }
 
